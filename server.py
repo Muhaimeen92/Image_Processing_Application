@@ -10,8 +10,9 @@ import subprocess
 import skimage
 
 app = Flask(__name__, static_url_path='/static', static_folder = "./frontend/public")
-app.config['MONGO_URI'] = "mongodb://host.docker.internal:27017/main"
-#app.config['MONGO_URI'] = "mongodb://%s:27017/main"%(os.environ['DB_PORT_27017_TCP_ADDR'])
+# This is the app config I used
+# app.config['MONGO_URI'] = "mongodb://host.docker.internal:27017/main"
+app.config['MONGO_URI'] = "mongodb://%s:27017/main"%(os.environ['DB_PORT_27017_TCP_ADDR'])
 
 mongo = PyMongo(app)
 db = mongo.db
@@ -233,10 +234,7 @@ def transform_image(imagename, filtertype):
     """
     if request.method == "GET":
         # x is the factor by which the image will be scaled
-        try:
-            x = float(request.args.get("value"))
-        except TypeError:
-            x = None
+        x = float(request.args.get("value", default=None, type=None))
 
         # Check if full image name is provided, else and the '.png' extension
         if imagename[-4:] != ".png":
