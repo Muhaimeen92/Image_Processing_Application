@@ -184,7 +184,7 @@ def populate_database():
             img_documents.append(img_document)
 
         db.images.insert_many(img_documents)
-        # Creating an index on the "width" filed
+        # Creating an index on the "width" field
         db.images.create_index("width")
         response = "database populated successfully"
 
